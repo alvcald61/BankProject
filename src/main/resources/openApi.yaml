@@ -1,0 +1,185 @@
+openapi: 3.0.3
+info:
+  title: Client API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /api/v1/client/{id}:
+    get:
+      summary: Get a client by ID
+      operationId: getClient
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the client to retrieve
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientResponse'
+  /api/v1/client:
+    post:
+      summary: Create a new client
+      operationId: saveClient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterClientRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientResponse'
+    put:
+      summary: Update an existing client by ID
+      operationId: updateClient
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the client to update
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterClientRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientResponse'
+    delete:
+      summary: Delete a client by ID
+      operationId: deleteClient
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the client to delete
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: No Content
+    patch:
+      summary: Partially update an existing client by ID
+      operationId: patchClient
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the client to update
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterClientRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientResponse'
+components:
+  schemas:
+    RegisterClientRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          minLength: 1
+        address:
+          type: string
+          minLength: 1
+        phone:
+          type: string
+          minLength: 1
+        password:
+          type: string
+          minLength: 1
+        gender:
+          type: string
+          nullable: true
+        identifier:
+          type: string
+          nullable: true
+        age:
+          type: integer
+          format: int32
+          minimum: 1
+          nullable: true
+      required:
+        - name
+        - address
+        - phone
+        - password
+    ClientResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        address:
+          type: string
+        phone:
+          type: string
+        gender:
+          type: string
+          nullable: true
+        identifier:
+          type: string
+          nullable: true
+        age:
+          type: integer
+          format: int32
+          minimum: 1
+          nullable: true
+      required:
+        - id
+        - name
+        - address
+        - phone
+    Error:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+          format: int32
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+        
